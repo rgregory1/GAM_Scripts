@@ -1,0 +1,635 @@
+#!/bin/bash
+
+#version 1.7
+#Updated for new groups for 17/18 year
+
+
+#Need to clean up temp files, make it so that files are created relative directory to script
+
+echo Starting...
+gam info user jhavens > /dev/null
+
+echo "v1.7"
+rm -rf /Users/Havens/bin/temp/*
+read -p "Do you wish to CREATE NEW USER?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+###
+# Staff
+###
+
+read -p "Is this a Staff Member?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+  echo "What is the staffs First Name?"
+  read NEWFIRSTNAME
+
+  echo "What is the staffs Last Name?"
+  read NEWLASTNAME
+
+  NEWFIRST_I_U=${NEWFIRSTNAME:0:1}
+  NEWFIRST_I_L=$(echo $NEWFIRST_I_U | tr '[:upper:]' '[:lower:]')
+
+  NEWLAST_I_U=${NEWLASTNAME:0:1}
+  NEWLAST_I_L=$(echo $NEWLAST_I_U | tr '[:upper:]' '[:lower:]')
+
+  NEWUSER="$NEWFIRST_I_L""$NEWLASTNAME"
+  NEWEMAIL="$NEWUSER""@fnwsu.org"
+
+  NEWDEFAULTPW="$NEWFIRST_I_L""$NEWLAST_I_L""3456789"
+
+  gam create user $NEWUSER firstname $NEWFIRSTNAME lastname $NEWLASTNAME password "$NEWDEFAULTPW" changepassword off org '/Swanton-All/Swan Staff-All'
+
+else
+
+###
+# student
+###
+
+    read -p "Is this a Student?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+        echo "What is the students First Name?"
+        read NEWFIRSTNAME
+
+        echo "What is the students Last Name?"
+        read NEWLASTNAME
+
+        NEWFIRST_I_U=${NEWFIRSTNAME:0:1}
+        NEWFIRST_I_L=$(echo $NEWFIRST_I_U | tr '[:upper:]' '[:lower:]')
+
+        NEWLAST_I_U=${NEWLASTNAME:0:1}
+        NEWLAST_I_L=$(echo $NEWLAST_I_U | tr '[:upper:]' '[:lower:]')
+
+        NEWDEFAULTPW="$NEWFIRST_I_L""$NEWLAST_I_L""3456789"
+
+          read -p "6th Grade? 2024" -n 1 -r
+          echo
+          if [[ $REPLY =~ ^[Yy]$ ]]
+          then
+            NEWUSER=24"$NEWLASTNAME""$NEWFIRST_I_L"
+            NEWEMAIL="$NEWUSER""@fnwsu.org"
+            gam create user $NEWUSER firstname $NEWFIRSTNAME lastname $NEWLASTNAME password "$NEWDEFAULTPW" changepassword off org '/Swanton-All/Swan Students-All/Swan Grade 6-2024'
+          else
+                read -p "5th Grade? 2025" -n 1 -r
+                echo
+                if [[ $REPLY =~ ^[Yy]$ ]]
+                then
+                  NEWUSER=25"$NEWLASTNAME""$NEWFIRST_I_L"
+                  NEWEMAIL="$NEWUSER""@fnwsu.org"
+                  gam create user $NEWUSER firstname $NEWFIRSTNAME lastname $NEWLASTNAME password "$NEWDEFAULTPW" changepassword off org '/Swanton-All/Swan Students-All/Swan Grade 5-2025'
+                else
+                      read -p "4th Grade? 2026" -n 1 -r
+                      echo
+                      if [[ $REPLY =~ ^[Yy]$ ]]
+                      then
+                        NEWUSER=26"$NEWLASTNAME""$NEWFIRST_I_L"
+                        NEWEMAIL="$NEWUSER""@fnwsu.org"
+                        gam create user $NEWUSER firstname $NEWFIRSTNAME lastname $NEWLASTNAME password "$NEWDEFAULTPW" changepassword off org '/Swanton-All/Swan Students-All/Swan Grade 4-2026'
+                      else
+                            read -p "3rd Grade? 2027" -n 1 -r
+                            echo
+                            if [[ $REPLY =~ ^[Yy]$ ]]
+                            then
+                              NEWUSER=27"$NEWLASTNAME""$NEWFIRST_I_L"
+                              NEWEMAIL="$NEWUSER""@fnwsu.org"
+                              gam create user $NEWUSER firstname $NEWFIRSTNAME lastname $NEWLASTNAME password "$NEWDEFAULTPW" changepassword off org '/Swanton-All/Swan Students-All/Swan Grade 3-2027'
+                            else
+                                  read -p "2nd Grade? 2028" -n 1 -r
+                                  echo
+                                  if [[ $REPLY =~ ^[Yy]$ ]]
+                                  then
+                                    NEWUSER=28"$NEWLASTNAME""$NEWFIRST_I_L"
+                                    NEWEMAIL="$NEWUSER""@fnwsu.org"
+                                    gam create user $NEWUSER firstname $NEWFIRSTNAME lastname $NEWLASTNAME password "$NEWDEFAULTPW" changepassword off org '/Swanton-All/Swan Students-All/Swan Grade 2-2028'
+                                  else
+                                    read -p "1st Grade? 2029" -n 1 -r
+                                    echo
+                                    if [[ $REPLY =~ ^[Yy]$ ]]
+                                    then
+                                      NEWUSER=29"$NEWLASTNAME""$NEWFIRST_I_L"
+                                      NEWEMAIL="$NEWUSER""@fnwsu.org"
+                                      gam create user $NEWUSER firstname $NEWFIRSTNAME lastname $NEWLASTNAME password "$NEWDEFAULTPW" changepassword off org '/Swanton-All/Swan Students-All/Swan Grade 1-2029'
+                                  fi
+                                  fi
+                            fi
+                        fi
+                    fi
+                fi
+    fi
+  fi
+  echo
+  echo Newly Created User Information:
+  echo Name: $NEWFIRSTNAME $NEWLASTNAME
+  echo User: $NEWUSER
+  echo EMail: $NEWEMAIL
+  echo Password: $NEWDEFAULTPW
+
+gam info user $NEWUSER
+gam info user $NEWUSER > /Users/Havens/bin/temp/new_info.txt
+
+      read -p "Copy to Log?" -n 1 -r
+      echo
+      if [[ $REPLY =~ ^[Yy]$ ]]
+      then
+
+  echo "####################" >> /Users/Havens/Logs/gamStart.log
+  echo "$(date +%Y-%m-%d_%H-%M)" >> /Users/Havens/Logs/gamStart.log
+  echo "Newly CREATED User Information:" >> /Users/Havens/Logs/gamStart.log
+  echo "Name: $NEWFIRSTNAME $NEWLASTNAME" >> /Users/Havens/Logs/gamStart.log
+  echo "User: $NEWUSER" >> /Users/Havens/Logs/gamStart.log
+  echo "EMail: $NEWEMAIL" >> /Users/Havens/Logs/gamStart.log
+  echo "Password: $NEWDEFAULTPW" >> /Users/Havens/Logs/gamStart.log
+  echo ""  >> /Users/Havens/Logs/gamStart.log
+  cat /Users/Havens/bin/temp/new_info.txt >> /Users/Havens/Logs/gamStart.log
+  echo "####################" >> /Users/Havens/Logs/gamStart.log
+  open -a TextEdit /Users/Havens/Logs/gamStart.log
+
+fi
+
+  echo
+  gam info user $NEWUSER
+
+fi
+
+##########################################################
+##########################################################
+##########################################################
+##########################################################
+##########################################################
+##########################################################
+##########################################################
+##########################################################
+##########################################################
+
+read -p "Do you wish to MODIFY EXISTING USER?" -n 1 -r
+echo
+echo "6th - 24, 5th - 25, 4th - 26, 3rd - 27, 2nd - 28"
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+echo "What is the users username? Format - 25lastnameF"
+read USER
+EMAIL="$USER""@fnwsu.org"
+
+echo
+echo "Info:"
+echo
+
+gam info user $USER > /Users/Havens/bin/temp/info.txt
+
+###
+#Current Groups:
+###
+
+#Pull out between groups and licenses from info file
+cat /Users/Havens/bin/temp/info.txt | sed -n '/Groups/,/Licenses/p' > /Users/Havens/bin/temp/groups.txt
+
+#remove first and last lines
+sed -i '' '1,1d' /Users/Havens/bin/temp/groups.txt
+
+#remove blank spaces
+sed -i '' '$ d' /Users/Havens/bin/temp/groups.txt
+
+#cut out
+sed 's/ //g' /Users/Havens/bin/temp/groups.txt >> /Users/Havens/bin/temp/groups.temp1
+
+#cut out first part
+cat /Users/Havens/bin/temp/groups.temp1 | sed 's/^[^:]*<//g' > /Users/Havens/bin/temp/groups.temp2
+
+#remove last >
+cat /Users/Havens/bin/temp/groups.temp2 | sed 's/>//g' > /Users/Havens/bin/temp/groups.temp3
+
+#for each line of file create variable
+for ((i=1;; i++)); do
+    read "d$i" || break;
+done < /Users/Havens/bin/temp/groups.temp3
+####
+
+#Figure out the groups and the roles in each, create roles.txt with group name and rolls
+for i in $d1 $d2 $d3 $d4 $d5 $d6 $d7 $d8 $d9
+do
+gam info group "$i" > /Users/Havens/bin/temp/spek"$i"
+echo Group: "$i" >> /Users/Havens/bin/temp/roles.txt
+cat /Users/Havens/bin/temp/spek"$i" | sed -n '/'$USER'/p' >> /Users/Havens/bin/temp/roles.txt
+
+done
+
+cp /Users/Havens/bin/temp/info.txt /Users/Havens/bin/temp/display_info.txt
+
+#Remove all lines after "Org"
+sed '/Org/q' /Users/Havens/bin/temp/display_info.txt > /Users/Havens/bin/temp/display_info.cut1
+echo "" >> /Users/Havens/bin/temp/display_info.cut1
+cp /Users/Havens/bin/temp/display_info.cut1  /Users/Havens/bin/temp/display_info.txt
+cat /Users/Havens/bin/temp/display_info.txt
+
+###
+#Testing
+###
+#cp /Users/Havens/bin/temp/roles.txt /Users/Havens/bin/temp/roles_expanded.txt
+
+
+touch /Users/Havens/bin/temp/roles_expanded.txt
+#appended SUFFIX to the end of every other line for easy removal after
+
+#If roles file exists, start the disection of groups
+if [ -f "/Users/Havens/bin/temp/roles.txt" ]; then
+  sed 's/$/SUFFIX/;n' /Users/Havens/bin/temp/roles.txt >> /Users/Havens/bin/temp/roles_expanded.txt
+
+
+#Create one line out of two line entries
+  awk 'NR%2{printf "%s ",$0;next;}1' /Users/Havens/bin/temp/roles_expanded.txt >> /Users/Havens/bin/temp/roles_expanded_2.txt
+
+#Pull out groups with lines for each users role
+  grep member /Users/Havens/bin/temp/roles_expanded_2.txt >> /Users/Havens/bin/temp/roles_member.temp1
+  grep manager /Users/Havens/bin/temp/roles_expanded_2.txt >> /Users/Havens/bin/temp/roles_manager.temp1
+  grep owner /Users/Havens/bin/temp/roles_expanded_2.txt >> /Users/Havens/bin/temp/roles_owner.temp1
+
+#Cut everything after SUFFIX as previously added
+  sed 's/SUFFIX.*//' /Users/Havens/bin/temp/roles_member.temp1 >> /Users/Havens/bin/temp/roles_member.temp2
+  sed 's/SUFFIX.*//' /Users/Havens/bin/temp/roles_manager.temp1 >> /Users/Havens/bin/temp/roles_manager.temp2
+  sed 's/SUFFIX.*//' /Users/Havens/bin/temp/roles_owner.temp1 >> /Users/Havens/bin/temp/roles_owner.temp2
+
+#cut out first 7 characters Group: to leave just the email addresses of groups
+  sed 's/\(.\{7\}\)//' /Users/Havens/bin/temp/roles_member.temp2 >> /Users/Havens/bin/temp/roles_member.txt
+  sed 's/\(.\{7\}\)//' /Users/Havens/bin/temp/roles_manager.temp2 >> /Users/Havens/bin/temp/roles_manager.txt
+  sed 's/\(.\{7\}\)//' /Users/Havens/bin/temp/roles_owner.temp2 >> /Users/Havens/bin/temp/roles_owner.txt
+
+# Create variables for each owner,manager and member
+  for ((i=1;; i++)); do
+      read "member$i" || break;
+    done < /Users/Havens/bin/temp/roles_member.txt
+
+  for ((i=1;; i++)); do
+      read "manager$i" || break;
+    done < /Users/Havens/bin/temp/roles_manager.txt
+
+  for ((i=1;; i++)); do
+      read "owner$i" || break;
+    done < /Users/Havens/bin/temp/roles_owner.txt
+
+fi
+
+###
+#Variable creation from info.txt
+###
+
+FIRSTNAME=$(sed -n -e 's/^.*First\ Name: //p' < /Users/Havens/bin/temp/info.txt)
+LASTNAME=$(sed -n -e 's/^.*Last\ Name: //p' < /Users/Havens/bin/temp/info.txt)
+PWFLAG=$(sed -n -e 's/^.*Change\ Password: //p' < /Users/Havens/bin/temp/info.txt)
+
+FIRST_I_U=${FIRSTNAME:0:1}
+FIRST_I_L=$(echo $FIRST_I_U | tr '[:upper:]' '[:lower:]')
+
+LAST_I_U=${LASTNAME:0:1}
+LAST_I_L=$(echo $LAST_I_U | tr '[:upper:]' '[:lower:]')
+
+DEFAULTPW="$FIRST_I_L""$LAST_I_L""3456789"
+
+#If roles file exists, display the information
+if [ -f "/Users/Havens/bin/temp/roles.txt" ]; then
+        cat /Users/Havens/bin/temp/roles.txt
+fi
+
+
+echo "**********"
+
+####################################################################
+
+###
+#Password reset
+###
+
+read -p "Do you wish to reset password for $USER?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+  read -p "Default Password $USER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  echo $DEFAULTPW it is
+  NEWPASSWORD=$DEFAULTPW
+
+  else
+
+  echo "New Password?"
+  read NEWPASSWORD
+
+  fi
+
+echo password will be ''$NEWPASSWORD''
+
+gam update user $USER password ''$NEWPASSWORD'' changepassword off
+
+fi
+echo "**********"
+
+###
+# Remove from all groups
+###
+
+read -p "Do you wish to remove $USER from ALL groups?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+echo
+
+for i in $d1 $d2 $d3 $d4 $d5 $d6 $d7 $d8 $d9
+do
+echo "Group: "$i" "
+gam update group "$i" remove user $EMAIL
+echo
+done
+
+
+
+echo "**********"
+
+###
+# Add user back to original groups after removal (For email lists)
+###
+
+read -p "Do you wish to add $USER back to their groups?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+for i in $member1 $member2 $member3 $member4 $member5 $member6 $member7 $member8 $member9
+do
+echo "Group: "$i" "
+gam update group "$i" add member user $EMAIL
+done
+
+for i in $manager1 $manager2 $manager3 $manager4 $manager5 $manager6 $manager7 $manager8 $manager9
+do
+echo "Group: "$i" "
+gam update group "$i" add manager user $EMAIL
+done
+
+for i in $owner1 $owner2 $owner3 $owner4 $owner5 $owner6 $owner7 $owner8 $owner9
+do
+echo "Group: "$i" "
+gam update group "$i" add owner user $EMAIL
+done
+
+
+fi
+fi
+echo "*********"
+###
+# Add User to Groups
+###
+
+read -p "Do you wish to add $USER to groups manually?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+###
+# Add User to Groups as regular user
+###
+
+read -p "Do you wish to add $USER to groups as REGULAR USER?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+  read -p "Do you wish to add $USER to Swanton Professional Group as REGULAR USER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  gam update group swantonprofessionalstaff@fnwsu.org add member user $EMAIL
+
+  fi
+
+  read -p "Do you wish to add $USER to Swanton Para Professional Group as REGULAR USER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  gam update group swantonparaprofessionals@fnwsu.org add member user $EMAIL
+
+  fi
+
+  read -p "Do you wish to add $USER to Central Building Group as REGULAR USER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  gam update group centralstaff@fnwsu.org add member user $EMAIL
+
+  fi
+
+  read -p "Do you wish to add $USER to Babcock Building Group as REGULAR USER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  gam update group babcockstaff@fnwsu.org add member user $EMAIL
+
+  fi
+
+fi #Close regular user for loop
+
+echo "**********"
+
+###
+# Add User to Groups as a manager
+###
+
+read -p "Do you wish to add $USER to groups as MANAGER?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+  read -p "Do you wish to add $USER to Swanton Professional Group as MANAGER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  gam update group swantonprofessionalstaff@fnwsu.org add manager user $EMAIL
+
+  fi
+
+  read -p "Do you wish to add $USER to Swanton Para Professional Group as MANAGER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  gam update group swantonparaprofessionals@fnwsu.org add manager user $EMAIL
+
+  fi
+
+  read -p "Do you wish to add $USER to Central Building Group as MANAGER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  gam update group centralstaff@fnwsu.org add manager user $EMAIL
+
+  fi
+
+  read -p "Do you wish to add $USER to Babcock Building Group as MANAGER" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+  gam update group babcockstaff@fnwsu.org add manager user $EMAIL
+
+  fi
+fi #Close manager add for loop
+fi #Close manual adding of groups for loop
+echo "**********"
+
+
+read -p "Do you wish to move $USER to a different Organizational Unit?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+            read -p "Active Staff Member?" -n 1 -r
+            echo
+            if [[ $REPLY =~ ^[Yy]$ ]]
+            then
+              gam update user $EMAIL org '/Swanton-All/Swan Staff-All'
+            else
+
+            read -p "SUSPENDED Staff Member?" -n 1 -r
+            echo
+            if [[ $REPLY =~ ^[Yy]$ ]]
+            then
+              gam update user $EMAIL org '/Swanton-All/Swan Staff-All/Swan Suspended-Staff'
+            else
+
+            read -p "6th Grade? 2024" -n 1 -r
+            echo
+            if [[ $REPLY =~ ^[Yy]$ ]]
+            then
+              gam update user $EMAIL org '/Swanton-All/Swan Students-All/Swan Grade 6-2024'
+            else
+                  read -p "5th Grade? 2025" -n 1 -r
+                  echo
+                  if [[ $REPLY =~ ^[Yy]$ ]]
+                  then
+                    gam update user $EMAIL org '/Swanton-All/Swan Students-All/Swan Grade 5-2025'
+                  else
+                        read -p "4th Grade? 2026" -n 1 -r
+                        echo
+                        if [[ $REPLY =~ ^[Yy]$ ]]
+                        then
+                          gam update user $EMAIL org '/Swanton-All/Swan Students-All/Swan Grade 4-2026'
+                        else
+                              read -p "3rd Grade? 2027" -n 1 -r
+                              echo
+                              if [[ $REPLY =~ ^[Yy]$ ]]
+                              then
+                                gam update user $EMAIL org '/Swanton-All/Swan Students-All/Swan Grade 3-2027'
+                              else
+                                    read -p "2nd Grade? 2028" -n 1 -r
+                                    echo
+                                    if [[ $REPLY =~ ^[Yy]$ ]]
+                                    then
+                                      gam update user $EMAIL org '/Swanton-All/Swan Students-All/Swan Grade 2-2028'
+                                      else
+                                            read -p "Suspended Students?" -n 1 -r
+                                            echo
+                                            if [[ $REPLY =~ ^[Yy]$ ]]
+                                            then
+                                              gam update user $EMAIL org '/Swanton-All/Swan Students-All/Swan Suspended-Students'
+                                            fi
+                              fi
+                          fi
+                      fi
+                  fi
+      fi
+    fi
+    fi
+    fi
+  fi
+
+echo "**********"
+
+read -p "Do you wish to UNSUSPEND $USER?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+gam update user $EMAIL suspended off
+
+fi
+
+echo "**********"
+
+read -p "Do you wish to SUSPEND $USER?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+gam update user $EMAIL suspended on
+
+fi
+echo "**********"
+
+      read -p "Copy to Log?" -n 1 -r
+      echo
+      if [[ $REPLY =~ ^[Yy]$ ]]
+      then
+  rm -rf /Users/Havens/bin/temp/*
+  gam info user $USER > /Users/Havens/bin/temp/info.txt
+  cat /Users/Havens/bin/temp/info.txt | sed -n '/Groups/,/Licenses/p' > /Users/Havens/bin/temp/groups.txt
+  sed -i '' '1,1d' /Users/Havens/bin/temp/groups.txt
+  sed -i '' '$ d' /Users/Havens/bin/temp/groups.txt
+  sed 's/ //g' /Users/Havens/bin/temp/groups.txt >> /Users/Havens/bin/temp/groups.temp1
+  cat /Users/Havens/bin/temp/groups.temp1 | sed 's/^[^:]*<//g' > /Users/Havens/bin/temp/groups.temp2
+  cat /Users/Havens/bin/temp/groups.temp2 | sed 's/>//g' > /Users/Havens/bin/temp/groups.temp3
+  for ((i=1;; i++)); do
+      read "d$i" || break;
+  done < /Users/Havens/bin/temp/groups.temp3
+  for i in $d1 $d2 $d3 $d4 $d5 $d6 $d7 $d8 $d9
+  do
+  gam info group "$i" > /Users/Havens/bin/temp/spek"$i"
+  echo Group: "$i" >> /Users/Havens/bin/temp/roles.txt
+  cat /Users/Havens/bin/temp/spek"$i" | sed -n '/'$USER'/p' >> /Users/Havens/bin/temp/roles.txt
+  done
+  cp /Users/Havens/bin/temp/info.txt /Users/Havens/bin/temp/display_info.txt
+  sed '/Org/q' /Users/Havens/bin/temp/display_info.txt > /Users/Havens/bin/temp/display_info.cut1
+  echo "" >> /Users/Havens/bin/temp/display_info.cut1
+
+  cp /Users/Havens/bin/temp/display_info.cut1  /Users/Havens/bin/temp/display_info.txt
+
+  echo "####################" >> /Users/Havens/Logs/gamStart.log
+  echo "$(date +%Y-%m-%d_%H-%M)" >> /Users/Havens/Logs/gamStart.log
+  echo "Newly UPDATED User Information:" >> /Users/Havens/Logs/gamStart.log
+  echo "Name: $FIRSTNAME $LASTNAME" >> /Users/Havens/Logs/gamStart.log
+  echo "User: $USER" >> /Users/Havens/Logs/gamStart.log
+  echo "EMail: $EMAIL" >> /Users/Havens/Logs/gamStart.log
+  echo "Password: $NEWPASSWORD" >> /Users/Havens/Logs/gamStart.log
+  echo ""  >> /Users/Havens/Logs/gamStart.log
+  cat /Users/Havens/bin/temp/display_info.txt >> /Users/Havens/Logs/gamStart.log
+  if [ -f "/Users/Havens/bin/temp/roles.txt" ]; then
+          cat /Users/Havens/bin/temp/roles.txt >> /Users/Havens/Logs/gamStart.log
+  fi
+  echo "####################" >> /Users/Havens/Logs/gamStart.log
+  open -a TextEdit /Users/Havens/Logs/gamStart.log
+
+fi
+########################################################################################
+
+###
+#End of script
+###
+
+echo "End of Script"
+rm -rf temp/*

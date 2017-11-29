@@ -1,0 +1,221 @@
+#!/bin/bash
+
+echo "What is the user?"
+read USER
+EMAIL="$USER""@fnwsu.org"
+
+gam info user $USER > temp/info.txt
+###
+#Info:
+###
+
+FIRSTNAME=$(sed -n -e 's/^.*First\ Name: //p' < temp/info.txt)
+LASTNAME=$(sed -n -e 's/^.*Last\ Name: //p' < temp/info.txt)
+PWFLAG=$(sed -n -e 's/^.*Change\ Password: //p' < temp/info.txt)
+
+echo $FIRSTNAME $LASTNAME
+echo "Email: "$EMAIL""
+
+###
+#Current Groups:
+###
+cat temp/info.txt | sed -n '/Groups/,/Licenses/p' > temp/groups.txt
+sed -i '' '$ d' temp/groups.txt
+cp temp/groups.txt temp/currentgroups.txt
+cat temp/currentgroups.txt
+sed -i '' '1,1d' temp/groups.txt
+sed 's/ //g' temp/groups.txt >> temp/groups.cut1
+cat temp/groups.cut1 | sed 's/^[^:]*<//g' > temp/groups.cut2
+cat temp/groups.cut2 | sed 's/>//g' > temp/groups.cut3
+for ((i=1;; i++)); do
+    read "d$i" || break;
+done < temp/groups.cut3
+
+echo
+
+gam print group-members member $EMAIL | grep $USER
+# grep $USER temp/statusfull.txt > temp/status.txt
+# sed -n '/Getting Members/q;p' temp/status.txt
+# cat temp/status.txt
+
+echo
+############################################################
+read -p "Do you wish to add $USER to groups?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+  read -p "Do you wish to add $USER as REGULAR USER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+    read -p "Do you wish to add $USER to Swanton Professional Group as REGULAR USER?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group swantonprofessionalstaff@fnwsu.org add member user $EMAIL
+
+    fi
+
+    read -p "Do you wish to add $USER to Swanton Para Professional Group as REGULAR USER?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group swantonparaprofessionals@fnwsu.org add member user $EMAIL
+
+    fi
+
+    read -p "Do you wish to add $USER to Central Building Group as REGULAR USER?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group centralstaff@fnwsu.org add member user $EMAIL
+
+    fi
+
+    read -p "Do you wish to add $USER to Babcock Building Group as REGULAR USER?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group babcockstaff@fnwsu.org add member user $EMAIL
+
+    fi
+
+else
+  read -p "Do you wish to add $USER as MANAGER?" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+
+    read -p "Do you wish to add $USER to Swanton Professional Group as MANAGER?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group swantonprofessionalstaff@fnwsu.org add manager user $EMAIL
+
+    fi
+
+    read -p "Do you wish to add $USER to Swanton Para Professional Group as MANAGER?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group swantonparaprofessionals@fnwsu.org add manager user $EMAIL
+
+    fi
+
+    read -p "Do you wish to add $USER to Central Building Group as MANAGER?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group centralstaff@fnwsu.org add manager user $EMAIL
+
+    fi
+
+    read -p "Do you wish to add $USER to Babcock Building Group as MANAGER?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group babcockstaff@fnwsu.org add manager user $EMAIL
+
+    fi
+fi
+fi
+fi
+
+############################################################
+read -p "Do you wish to remove $USER from groups?" -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+
+
+    read -p "Do you wish to remove $USER from Swanton Professional Group?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group swantonprofessionalstaff@fnwsu.org remove member user $EMAIL
+
+    fi
+
+    read -p "Do you wish to remove $USER from Swanton Para Professional Group?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group swantonparaprofessionals@fnwsu.org remove member user $EMAIL
+
+    fi
+
+    read -p "Do you wish to remove $USER from Central Building Group?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group centralstaff@fnwsu.org remove member user $EMAIL
+
+    fi
+
+    read -p "Do you wish to remove $USER from Babcock Building Group?" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+
+    gam update group babcockstaff@fnwsu.org remove member user $EMAIL
+
+    fi
+fi
+
+###############################
+#recap
+###############################
+
+rm -rf temp/currentgroups.txt
+rm -rf temp/info.txt
+
+gam info user $USER > temp/info.txt
+###
+#Info:
+###
+
+FIRSTNAME=$(sed -n -e 's/^.*First\ Name: //p' < temp/info.txt)
+LASTNAME=$(sed -n -e 's/^.*Last\ Name: //p' < temp/info.txt)
+PWFLAG=$(sed -n -e 's/^.*Change\ Password: //p' < temp/info.txt)
+
+echo $FIRSTNAME $LASTNAME
+echo "Email: "$EMAIL""
+
+###
+#Current Groups:
+###
+cat temp/info.txt | sed -n '/Groups/,/Licenses/p' > temp/groups.txt
+sed -i '' '$ d' temp/groups.txt
+cp temp/groups.txt temp/currentgroups.txt
+cat temp/currentgroups.txt
+sed -i '' '1,1d' temp/groups.txt
+sed 's/ //g' temp/groups.txt >> temp/groups.cut1
+cat temp/groups.cut1 | sed 's/^[^:]*<//g' > temp/groups.cut2
+cat temp/groups.cut2 | sed 's/>//g' > temp/groups.cut3
+for ((i=1;; i++)); do
+    read "d$i" || break;
+done < temp/groups.cut3
+
+echo
+gam print group-members member $EMAIL | grep $USER
+echo
+
+###
+#End of script
+###
+echo
+echo "End of Script"
+rm -rf temp/*

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo Starting...
+
+echo "file associated with this is called students.txt in this directory (bin)"
+
+#read file
+while read i; do
+gam update user $i org '/Swanton-All/Swan Students-All/Swan Test-Students'
+done </Users/Havens/bin/students.txt
+#done </Users/havens/bin/$FILE

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#gam update cros "query:asset_id:'SWA1578'" ou "/Swanton-All/Chromebooks/12.13 Samsung - Silver/Babcock Library"
+
+echo Starting...
+
+echo "file associated with this is called devices.txt in this directory"
+
+#read file
+while read i; do
+gam update cros "query:asset_id:'$i'" ou "/Swanton-All/Chromebooks/12.13 Samsung - Silver/Babcock Library"
+done </Users/Havens/bin/devices.txt
+#done </Users/havens/bin/$FILE
