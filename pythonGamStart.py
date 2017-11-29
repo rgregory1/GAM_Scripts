@@ -212,7 +212,7 @@ if choice:
                 gam_input= "gam update group swantonprofessionalstaff@fnwsu.org add member user "+ existing_email
                 result_1 = os.popen(gam_input).read()
                 print(result_1)
-            question = str("Add "+existing_user_name+" to SWANTON PARA PROFESSIONAL as REGULAR USER?")
+            question = str("Do you wish to add "+existing_user_name+" to SWANTON PARA-PROFESSIONAL GROUP as REGULAR USER?")
             choice = query_yes_no(question, default="yes")
             if choice:
                 gam_input= "gam update group swantonparaprofessionals@fnwsu.org add member user "+ existing_email
