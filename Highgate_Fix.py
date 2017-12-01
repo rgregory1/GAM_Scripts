@@ -1,12 +1,7 @@
-#Python used to create list of staff in pro and para lists
 import os
 
 result1 = os.popen("gam info group swantonprofessionalstaff@fnwsu.org").read()
 result2 = os.popen("gam info group swantonparaprofessionals@fnwsu.org").read()
-#print(result)
-#result1 = result.splitlines()
-#result2 = []
-#print(result1)
 def clean(result):
     result2 = []
     result1 = result.splitlines()
@@ -27,6 +22,9 @@ list1 = clean(result1)
 list2 = clean(result2)
 
 final_list = list(set(list1 + list2))
-print("Count: " + str(len(final_list)))
-for x in sorted(final_list):
-    print(x)
+
+for x in final_list:
+
+    gam_input = "gam update group highgate-para-staff@fnwsu.org remove user "+x
+    result = os.popen(gam_input).read()
+    print(x +"  "+result)
