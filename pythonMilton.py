@@ -2,7 +2,8 @@ import os
 import sys
 from itertools import islice
 
-grade_book = {'6': 24, '5': 25, '4': 26, '3':27, '2':28, '1':29}
+grade_book = {'12': 19, '11': 20, '10': 21, '9': 22, '8': 23,'7': 24, \
+    '6': 25, '5': 26, '4': 27, '3':28, '2':29, '1':30}
 
 def query_yes_no(question, default="yes"):
 
@@ -29,9 +30,9 @@ def query_yes_no(question, default="yes"):
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
 
-print("Python v1.0")
+print("Milton v1.0")
 print("Starting...")
-result_test = os.popen("gam info user jswanton").read()
+result_test = os.popen("~/bin/gam/gam info user jhavens").read()
 
 question_1 = "Do you wish to create NEW USER?"
 choice_1 = query_yes_no(question_1, default="yes")
@@ -44,32 +45,35 @@ if choice_1:
         first_name = input('First Name: ')
         last_name = input('Last Name: ')
 
-        NEWFIRST_I_L = first_name[0].lower()
-        NEWLAST_I_L = last_name[0].lower()
-        NEWUSER = NEWFIRST_I_L + last_name.lower()
-        NEWEMAIL = NEWUSER + "@fnwsu.org"
-        NEWDEFAULTPW = first_name[0].lower() + last_name[0].lower() + "3456789"
-        gam_input = "gam create user "+NEWUSER+" firstname "+first_name+" lastname "+last_name+" password "+NEWDEFAULTPW+" changepassword off org '/Swanton-All/Swan Staff-All'"
+        #NEWFIRST_I_L = first_name[0].lower()
+        #NEWLAST_I_L = last_name[0].lower()
+        NEWUSER = first_name[0].lower() + last_name.lower()
+        NEWEMAIL = NEWUSER + "@mymtsd-vt.org"
+        NEWDEFAULTPW = first_name[0].lower() + last_name.lower() + "123"
+        gam_input = "~/bin/gam/gam create user "+NEWUSER+" firstname "+first_name+" lastname "+last_name+" password "+NEWDEFAULTPW+" changepassword off org '/Faculty_Staff'"
+        #print(gam_input)
         result_1 = os.popen(gam_input).read()
         print(result_1)
 
-    question_3 = "Is this a Student?"
-    choice_3 = query_yes_no(question_3, default="yes")
-    if choice_3:
+    if not choice_2:
+        question_3 = "Is this a Student?"
+        choice_3 = query_yes_no(question_3, default="yes")
+        if choice_3:
 
-        first_name = input('First Name: ')
-        last_name = input('Last Name: ')
-        grade = input('Grade: ')
-        grad_year = grade_book[grade]
+            first_name = input('First Name: ')
+            last_name = input('Last Name: ')
+            grade = input('Grade: ')
+            grad_year = grade_book[grade]
 
-        NEWFIRST_I_L = first_name[0].lower()
-        NEWLAST_I_L = last_name[0].lower()
-        NEWUSER = str(grad_year) + last_name.lower() + NEWFIRST_I_L
-        NEWEMAIL = NEWUSER + "@fnwsu.org"
-        NEWDEFAULTPW = first_name[0].lower() + last_name[0].lower() + "3456789"
-        gam_input = "gam create user "+NEWUSER+" firstname "+first_name+" lastname "+last_name+" password "+NEWDEFAULTPW+" changepassword off org '/Swanton-All/Swan Students-All/Swan Grade "+str(grade)+"-20"+str(grad_year)+"'"
-        result_1 = os.popen(gam_input).read()
-        print(result_1)
+            #NEWFIRST_I_L = first_name[:3].lower()
+            #NEWLAST_I_L = last_name[0].lower()
+            NEWUSER = first_name[:3].lower() + last_name.lower()
+            NEWEMAIL = NEWUSER + "@mymtsd-vt.org"
+            NEWDEFAULTPW = first_name[:3].lower() + last_name.lower() + "123"
+            gam_input = "~/bin/gam/gam create user "+NEWUSER+" firstname "+first_name+" lastname "+last_name+" password "+NEWDEFAULTPW+" changepassword off org '/Students/GY20"+str(grad_year)+"'"
+            #print(gam_input)
+            result_1 = os.popen(gam_input).read()
+            print(result_1)
 
     print()
     print("Newly Created User Info:")
@@ -79,7 +83,7 @@ if choice_1:
     print("Password: "+NEWDEFAULTPW)
     print()
 
-    gam_input = "gam info user "+NEWUSER
+    gam_input = "~/bin/gam/gam info user "+NEWUSER
     result_1 = os.popen(gam_input).read()
     print(result_1)
     print()
@@ -92,10 +96,10 @@ question = "Do you wish to modify EXISTING USER?"
 choice = query_yes_no(question, default="yes")
 if choice:
     existing_user_name = input('Username? (just user - no email) ')
-    existing_email = existing_user_name + "@fnwsu.org"
+    existing_email = existing_user_name + "@mymtsd-vt.org"
     print("Info:")
     print()
-    gam_input = "gam info user "+existing_user_name
+    gam_input = "~/bin/gam/gam info user "+existing_user_name
     result_1 = os.popen(gam_input).read()
     result_2 = result_1
     head = list(islice(result_1.splitlines(), 19))
@@ -103,17 +107,16 @@ if choice:
         print(x)
 
     ## Groups
-
     group_list= []
     group_dictionary= {}
     for x in result_1.splitlines():
-        if "@" in x and "User" not in x:
+        if "@" in x and "User" not in x and existing_user_name not in x: #filter out results that aren't actual groups
             a = x.split('<',1)[-1]
             b = a.replace(">", "")
             group_list.append(b)
 
     for x in group_list:
-        gam_input = "gam info group "+x
+        gam_input = "~/bin/gam/gam info group "+x
         result_1 = os.popen(gam_input).read()
         for y in result_1.splitlines():
             if existing_email in y:
@@ -135,9 +138,12 @@ if choice:
             PW_Flag = x.split(':',1)[-1].strip()
         if "Account Suspended:" in x:
             account_suspended = x.split(':',1)[-1].strip()
-    NEWFIRST_I_L = first_name[0].lower()
-    NEWLAST_I_L = last_name[0].lower()
-    DEFAULTPW = first_name[0].lower() + last_name[0].lower() + "3456789"
+    #NEWFIRST_I_L = first_name[0].lower()
+    #NEWLAST_I_L = last_name[0].lower()
+    #DEFAULTPW = first_name[0].lower() + last_name[0].lower() + "3456789"
+    #NEWFIRST_I_L = first_name[:3].lower()
+    #NEWLAST_I_L = last_name[0].lower()
+    #DEFAULTPW = NEWFIRST_I_L + last_name.lower() + "123"
 
     if account_suspended == "True":
         print()
@@ -145,6 +151,7 @@ if choice:
         print("WARNING: ACCOUNT IS SUSPENDED")
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         print()
+
     if PW_Flag == "True":
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         print("WARNING: PWFLAG IS SET TO TRUE")
@@ -158,12 +165,22 @@ if choice:
         question = "Default password for "+existing_user_name+"?"
         choice = query_yes_no(question, default="yes")
         if choice:
-            new_password = DEFAULTPW
+            question = "Is "+existing_user_name+" a STUDENT?"
+            choice = query_yes_no(question, default="yes")
+            if choice:
+                new_password = first_name[:3].lower() + last_name.lower() + "123"
+            else:
+                print("Creating Teacher Password...")
+                #question = "Is "+existing_user_name+" a TEACHER?"
+                #choice = query_yes_no(question, default="yes")
+                #if choice:
+                new_password = first_name[0].lower() + last_name.lower() + "123"
         else:
             custom_pw = input('Input custom password: ')
             new_password = custom_pw
+
         print("Password will be "+new_password)
-        gam_input = "gam update user "+existing_user_name+" password '"+new_password+"' changepassword off"
+        gam_input = "~/bin/gam/gam update user "+existing_user_name+" password '"+new_password+"' changepassword off"
         result = os.popen(gam_input).read()
         print(result)
     print("********************")
@@ -172,11 +189,11 @@ if choice:
     choice = query_yes_no(question, default="yes")
     if choice:
         for key in group_dictionary:
-            gam_input = "gam update group "+key+" remove user "+existing_email
+            gam_input = "~/bin/gam/gam update group "+key+" remove user "+existing_email
             print(key)
             result = os.popen(gam_input).read()
             print(result)
-        gam_input = "gam info user "+existing_user_name
+        gam_input = "~/bin/gam/gam info user "+existing_user_name
         result_1 = os.popen(gam_input).read()
         print(result_1)
 
@@ -185,7 +202,7 @@ if choice:
         if choice:
             for key in group_dictionary:
                 print(key)
-                gam_input = "gam update group "+key+" add "+group_dictionary[key]+" user "+existing_email
+                gam_input = "~/bin/gam/gam update group "+key+" add "+group_dictionary[key]+" user "+existing_email
                 result_1 = os.popen(gam_input).read()
                 print(result_1)
         else:
@@ -195,61 +212,56 @@ if choice:
     question = str("Do you wish to add "+existing_user_name+" to groups manually?")
     choice = query_yes_no(question, default="yes")
     if choice:
+
         question = str("Do you wish to add "+existing_user_name+" to groups as REGULAR USER?")
         choice = query_yes_no(question, default="yes")
         if choice:
-            question = str("Do you wish to add "+existing_user_name+" to SWANTON PROFESSIONAL GROUP as REGULAR USER?")
+            question = str("Do you wish to add "+existing_user_name+" to Staff MES as REGULAR USER?")
             choice = query_yes_no(question, default="yes")
             if choice:
-                gam_input= "gam update group swantonprofessionalstaff@fnwsu.org add member user "+ existing_email
+                gam_input = "~/bin/gam/gam update group staff-mes@mymtsd-vt.org add member user "+ existing_email
                 result_1 = os.popen(gam_input).read()
                 print(result_1)
-            question = str("Do you wish to add "+existing_user_name+" to SWANTON PARA-PROFESSIONAL GROUP as REGULAR USER?")
+
+            question = str("Do you wish to add "+existing_user_name+" to Staff MMS as REGULAR USER?")
             choice = query_yes_no(question, default="yes")
             if choice:
-                gam_input= "gam update group swantonparaprofessionals@fnwsu.org add member user "+ existing_email
+                gam_input = "~/bin/gam/gam update group staff-mms@mymtsd-vt.org add member user "+ existing_email
                 result_1 = os.popen(gam_input).read()
                 print(result_1)
-            question = str("Add "+existing_user_name+" to CENTRAL BUILDING as REGULAR USER?")
+
+            question = str("Add "+existing_user_name+" to Staff MHS as REGULAR USER?")
             choice = query_yes_no(question, default="yes")
             if choice:
-                gam_input= "gam update group centralstaff@fnwsu.org add member user "+ existing_email
-                result_1 = os.popen(gam_input).read()
-                print(result_1)
-            question = str("Add "+existing_user_name+" to BABCOCK BUILDING as REGULAR USER?")
-            choice = query_yes_no(question, default="yes")
-            if choice:
-                gam_input= "gam update group babcockstaff@fnwsu.org add member user "+ existing_email
+                gam_input = "~/bin/gam/gam update group staff-mhs@mymtsd-vt.org add member user "+ existing_email
                 result_1 = os.popen(gam_input).read()
                 print(result_1)
 
         question = str("Do you wish to add "+existing_user_name+" to groups as MANAGER?")
         choice = query_yes_no(question, default="yes")
         if choice:
-            question = str("Do you wish to add "+existing_user_name+" to SWANTON PROFESSIONAL GROUP as MANAGER?")
+
+            question = str("Do you wish to add "+existing_user_name+" to Staff MES as MANAGER?")
             choice = query_yes_no(question, default="yes")
             if choice:
-                gam_input= "gam update group swantonprofessionalstaff@fnwsu.org add manager user "+ existing_email
+                gam_input = "~/bin/gam/gam update group staff-mes@mymtsd-vt.org add manager user "+ existing_email
                 result_1 = os.popen(gam_input).read()
                 print(result_1)
-            question = str("Add "+existing_user_name+" to SWANTON PARA PROFESSIONAL as MANAGER?")
+
+            question = str("Do you wish to add "+existing_user_name+" to Staff MMS as MANAGER?")
             choice = query_yes_no(question, default="yes")
             if choice:
-                gam_input= "gam update group swantonparaprofessionals@fnwsu.org add manager user "+ existing_email
+                gam_input = "~/bin/gam/gam update group staff-mms@mymtsd-vt.org add manager user "+ existing_email
                 result_1 = os.popen(gam_input).read()
                 print(result_1)
-            question = str("Add "+existing_user_name+" to CENTRAL BUILDING as MANAGER?")
+
+            question = str("Do you wish to add "+existing_user_name+" to Staff MHS as MANAGER?")
             choice = query_yes_no(question, default="yes")
             if choice:
-                gam_input= "gam update group centralstaff@fnwsu.org add manager user "+ existing_email
+                gam_input = "~/bin/gam/gam update group staff-mhs@mymtsd-vt.org add manager user "+ existing_email
                 result_1 = os.popen(gam_input).read()
                 print(result_1)
-            question = str("Add "+existing_user_name+" to BABCOCK BUILDING as MANAGER?")
-            choice = query_yes_no(question, default="yes")
-            if choice:
-                gam_input= "gam update group babcockstaff@fnwsu.org add manager user "+ existing_email
-                result_1 = os.popen(gam_input).read()
-                print(result_1)
+
     print("********************")
 
     question = str("Do you wish to move "+existing_user_name+" to a different ORGANIZATIONAL UNIT?")
@@ -258,33 +270,33 @@ if choice:
         question = str("ACTIVE staff member?")
         choice = query_yes_no(question, default="yes")
         if choice:
-            gam_input= "gam update user "+existing_email+" org '/Swanton-All/Swan Staff-All'"
+            gam_input = "~/bin/gam/gam update user "+existing_email+" org '/Faculty_Staff'"
             result_1 = os.popen(gam_input).read()
             print(result_1)
+        # else:
+        #     question = str("REMOVED staff member?")
+        #     choice = query_yes_no(question, default="yes")
+        #     if choice:
+        #         gam_input = "~/bin/gam/gam update user "+existing_email+" org '/Swanton-All/Swan Staff-All/Swan Suspended-Staff'"
+        #         result_1 = os.popen(gam_input).read()
+        #         print(result_1)
         else:
-            question = str("REMOVED staff member?")
-            choice = query_yes_no(question, default="yes")
-            if choice:
-                gam_input= "gam update user "+existing_email+" org '/Swanton-All/Swan Staff-All/Swan Suspended-Staff'"
-                result_1 = os.popen(gam_input).read()
-                print(result_1)
-            else:
-                for key in grade_book:
-                    question = str("Grade: "+str(key)+" Grad Year: "+str(grade_book[key])+" ?")
-                    choice = query_yes_no(question, default="yes")
-                    if choice:
-                        gam_input= "gam update user "+existing_email+" org '/Swanton-All/Swan Students-All/Swan Grade "+str(key)+"-20"+str(grade_book[key])+"'"
-                        result_1 = os.popen(gam_input).read()
-                        print(result_1)
+            for key in grade_book:
+                question = str("Grade: "+str(key)+" Grad Year: "+str(grade_book[key])+" ?")
+                choice = query_yes_no(question, default="yes")
+                if choice:
+                    gam_input = "~/bin/gam/gam update user "+existing_email+" org '/Students/GY20"+str(grad_year)+"'"
+                    result_1 = os.popen(gam_input).read()
+                    print(result_1)
     print("********************")
 
     question = str("Do you wish to have "+existing_user_name+" SUSPENDED?")
     choice = query_yes_no(question, default="yes")
     if choice:
-        gam_input= "gam update user "+existing_email+" suspended on"
+        gam_input = "~/bin/gam/gam update user "+existing_email+" suspended on"
         result_1 = os.popen(gam_input).read()
         print(result_1)
     else:
-        gam_input= "gam update user "+existing_email+" suspended off"
+        gam_input = "~/bin/gam/gam update user "+existing_email+" suspended off"
         result_1 = os.popen(gam_input).read()
         print(result_1)

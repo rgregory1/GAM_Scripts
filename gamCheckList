@@ -1,9 +1,0 @@
-#!/bin/bash
-
-echo Starting...
-
-
-while read i; do
-echo $i >> /Users/Havens/bin/checklistresults.txt
-gam info user $i >> /Users/Havens/bin/checklistresults.txt
-done </Users/Havens/bin/checklist.txt
